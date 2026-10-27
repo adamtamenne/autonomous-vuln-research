@@ -1,0 +1,13 @@
+{
+  "name": "vuln-target-validation-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Autonomous XSS validation agent — bridges opengrep SAST + ZAP DAST into a browser-confirmed PoC",
+  "main": "validate.js",
+  "type": "commonjs",
+  "scripts": { "start": "node validate.js" },
+  "dependencies": {
+    "playwright": "1.48.0",
+    "@anthropic-ai/sdk": "latest"
+  }
+}

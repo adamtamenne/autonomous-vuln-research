@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · VulnTarget</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page login-page">
+  <main class="login-card">
+    <div class="brand"><span class="brand-mark">🐞</span> VulnTarget</div>
+    <p class="subtitle">Security team bug-reporting portal</p>
+    <form method="POST" action="/login">
+      <label>Username<input name="username" autocomplete="username" autofocus></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password"></label>
+      <div class="error">{{error}}</div>
+      <button type="submit">Sign in</button>
+    </form>
+    <p class="hint muted">Demo accounts: alice / password123 · admin / admin123</p>
+  </main>
+</body>
+</html>

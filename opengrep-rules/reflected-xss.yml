@@ -1,0 +1,28 @@
+rules:
+  # Reflected XSS: req.query taints an HTML template-literal response, unescaped.
+  # Fires on routes/search.js. The esc() sanitizer keeps escaped output from matching,
+  # so the SQLi filter page (which esc()s its display values) is not a false positive.
+  - id: vuln-target-express-reflected-xss
+    languages: [javascript]
+    severity: ERROR
+    mode: taint
+    message: >-
+      Reflected XSS: a user-controlled `req.query` value is interpolated into an HTML
+      template-literal response (res.send(`...`)) with no output encoding. An attacker's
+      script in the query string executes in the victim's browser.
+    metadata:
+      cwe: "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+      owasp: "A03:2021 - Injection"
+      category: security
+      confidence: HIGH
+    pattern-sources:
+      - pattern: req.query
+      - pattern: req.query.$P
+    pattern-sanitizers:
+      - pattern: esc(...)
+      # DB query results are not reflected-input taint for this rule (second-order data);
+      # this keeps the SQLi filter page from registering as XSS via its result rows.
+      - pattern: db.prepare(...).all(...)
+      - pattern: db.prepare(...).get(...)
+    pattern-sinks:
+      - pattern: 'res.send(`...`)'

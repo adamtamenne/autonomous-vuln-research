@@ -1,0 +1,27 @@
+# OpenGrep SAST scanner — built from the official pinned release binary.
+# There is no official opengrep image on a public registry, so we fetch the
+# signed release artifact directly. Pinned for reproducible demo runs.
+# Wrapped with scanner/scan.sh so the terminal shows a readable "potential vuln"
+# summary (rule, file, line, CWE, code), not just "1 finding".
+FROM debian:bookworm-slim
+
+ARG OPENGREP_VERSION=v1.32.0
+ARG OPENGREP_ASSET=opengrep_manylinux_x86
+
+# UTF-8 so non-ASCII source (e.g. the "·" in page titles) echoes cleanly, not as mojibake.
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl ca-certificates jq \
+  && curl -fsSL -o /usr/local/bin/opengrep \
+       "https://github.com/opengrep/opengrep/releases/download/${OPENGREP_VERSION}/${OPENGREP_ASSET}" \
+  && chmod +x /usr/local/bin/opengrep \
+  && apt-get purge -y curl \
+  && apt-get autoremove -y \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY scanner/scan.sh /usr/local/bin/scan.sh
+RUN chmod +x /usr/local/bin/scan.sh
+
+WORKDIR /src
+ENTRYPOINT ["scan.sh"]

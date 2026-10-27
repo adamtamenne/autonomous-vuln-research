@@ -1,0 +1,31 @@
+rules:
+  # HTML injection (reflected): user input concatenated into an HTML response via
+  # string concatenation (res.send(... + ...)), unescaped. Fires on routes/preview.js.
+  # Lower severity (WARNING -> MEDIUM) than reflected XSS: markup injection / defacement,
+  # though with no CSP it is script-capable too. esc() output is sanitized.
+  - id: vuln-target-html-injection
+    languages: [javascript]
+    severity: WARNING
+    mode: taint
+    message: >-
+      HTML injection: a user-controlled value is concatenated into an HTML response
+      (res.send(... + ...)) with no encoding, allowing arbitrary markup to be injected
+      into the page.
+    metadata:
+      cwe: "CWE-79: Improper Neutralization of Input During Web Page Generation (HTML Injection)"
+      owasp: "A03:2021 - Injection"
+      category: security
+      confidence: MEDIUM
+    pattern-sources:
+      - pattern: req.query
+      - pattern: req.query.$P
+    pattern-sanitizers:
+      - pattern: esc(...)
+      - pattern: db.prepare(...).all(...)
+      - pattern: db.prepare(...).get(...)
+    pattern-sinks:
+      # any res.send() that is NOT a template-literal response (those are the XSS rule's);
+      # this catches the string-concatenation response in routes/preview.js.
+      - patterns:
+          - pattern: res.send(...)
+          - pattern-not: 'res.send(`...`)'

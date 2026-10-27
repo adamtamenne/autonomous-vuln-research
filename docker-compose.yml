@@ -1,0 +1,58 @@
+services:
+  vuln-target:
+    build: .
+    container_name: vuln-target
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  # One-shot SAST scanner (OpenGrep). NOT started with the app — it lives behind
+  # the "scan" profile and exits when done. Run it with:
+  #   docker compose run --rm scanner
+  # Findings land in ./out/findings.json (what the agent pipeline reads).
+  scanner:
+    build:
+      context: .
+      dockerfile: Dockerfile.scanner
+    profiles: ["scan"]
+    volumes:
+      - ./:/src:ro # app source, read-only
+      - ./out:/out # findings written here
+    # Entrypoint is scanner/scan.sh: runs opengrep and prints a readable
+    # "potential vuln" summary. Output JSON -> out/findings.json.
+
+  # DAST scanner (OWASP ZAP). One-shot, behind the "dast" profile. Runs on the same
+  # network as the app and reaches it as http://vuln-target:3000. Pick a plan per run:
+  #   docker compose up -d vuln-target
+  #   docker compose run --rm zap zap.sh -cmd -autorun /zap/wrk/plan-1-noauth.yaml
+  #   docker compose run --rm zap zap.sh -cmd -autorun /zap/wrk/plan-2-auth.yaml
+  #   docker compose run --rm zap zap.sh -cmd -autorun /zap/wrk/plan-3-auth-route.yaml
+  # HTML + JSON reports land in ./zap/zap-out/.
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:2.17.0
+    profiles: ["dast"]
+    volumes:
+      - ./zap:/zap/wrk:rw
+    # Default command validates the authenticated plan without attacking; override per run above.
+    command: ["zap.sh", "-cmd", "-autocheck", "/zap/wrk/plan-2-auth.yaml"]
+
+  # Validation agent (Node + Playwright). One-shot, behind the "agent" profile.
+  # Bridges SAST + DAST into a browser-confirmed PoC. Run with:
+  #   docker compose up -d vuln-target
+  #   docker compose run --rm agent
+  # Reads out/findings.json + zap/zap-out/tier2-auth.json, writes agent/poc/poc.{md,json}.
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    profiles: ["agent"]
+    environment:
+      - TARGET_URL=http://vuln-target:3000
+      - APP_ROOT=/src
+      # Passed through from your shell for the LLM-crafted path-traversal exploit:
+      #   ANTHROPIC_API_KEY=sk-... docker compose run --rm agent node exploit-traversal.js
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - AGENT_MODEL=${AGENT_MODEL:-claude-opus-4-8}
+      - AGENT_PAYLOADS=${AGENT_PAYLOADS:-}
+    volumes:
+      - ./:/src:rw

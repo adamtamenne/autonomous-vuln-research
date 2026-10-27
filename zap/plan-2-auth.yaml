@@ -1,0 +1,62 @@
+# TIER 2 — authenticated scan.
+# ZAP logs in as alice (form auth) and crawls the app following nav links:
+# dashboard -> report -> comment form, and the profile page. The active scanner
+# injects into those forms and flags the STORED XSS. It still MISSES /search,
+# because /search is linked nowhere — an authenticated crawl never reaches it.
+# This is the core contrast: DAST finds the linked vuln on its own, misses the hidden one.
+---
+env:
+  contexts:
+    - name: vuln-target
+      urls:
+        - http://vuln-target:3000
+      includePaths:
+        - "http://vuln-target:3000.*"
+      excludePaths:
+        - "http://vuln-target:3000/logout.*"
+      authentication:
+        method: form
+        parameters:
+          loginPageUrl: http://vuln-target:3000/
+          loginRequestUrl: http://vuln-target:3000/login
+          loginRequestBody: "username={%username%}&password={%password%}"
+        verification:
+          method: response
+          loggedInRegex: ">Logout<"
+          loggedOutRegex: ">Sign in<"
+      sessionManagement:
+        method: cookie
+      users:
+        - name: alice
+          credentials:
+            username: alice
+            password: password123
+  parameters:
+    failOnError: true
+    progressToStdout: true
+jobs:
+  - type: spider
+    parameters:
+      context: vuln-target
+      user: alice
+      url: http://vuln-target:3000/
+      maxDuration: 3
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 5
+  - type: activeScan
+    parameters:
+      context: vuln-target
+      user: alice
+      maxScanDurationInMins: 10
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier2-auth
+      reportTitle: "VulnTarget DAST — Tier 2 (authenticated)"
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier2-auth

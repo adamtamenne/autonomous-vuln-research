@@ -1,0 +1,23 @@
+rules:
+  # SQL injection: user input reaches db.prepare() inside a concatenated/interpolated
+  # SQL string instead of a bound parameter. Fires on routes/filter.js. Parameterized
+  # queries (constant string passed to prepare, values bound via .all(?)) do not match.
+  - id: vuln-target-sqli-string-concat
+    languages: [javascript]
+    severity: ERROR
+    mode: taint
+    message: >-
+      SQL injection: a user-controlled value reaches db.prepare() as part of a
+      concatenated or interpolated SQL string rather than a bound parameter.
+    metadata:
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      owasp: "A03:2021 - Injection"
+      category: security
+      confidence: HIGH
+    pattern-sources:
+      - pattern: req.query
+      - pattern: req.query.$P
+      - pattern: req.params
+      - pattern: req.params.$P
+    pattern-sinks:
+      - pattern: db.prepare(...)

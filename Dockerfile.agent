@@ -1,0 +1,13 @@
+# Validation agent — Node + Playwright (headless Chromium).
+# The Playwright base image already ships the browsers + system deps, pinned to the
+# matching Playwright version, so the agent needs no browser download at runtime.
+FROM mcr.microsoft.com/playwright:v1.48.0-jammy
+
+WORKDIR /agent
+COPY agent/package.json ./
+RUN npm install --omit=dev
+COPY agent/ ./
+
+# Project (SAST/DAST reports + source) is mounted at /src at runtime.
+ENV APP_ROOT=/src
+ENTRYPOINT ["node", "validate.js"]

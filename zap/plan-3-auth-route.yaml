@@ -1,0 +1,69 @@
+# TIER 3 — authenticated scan + the agent-supplied route.
+# Same authenticated context as Tier 2, but a `requestor` job feeds ZAP the hidden
+# /search endpoint (the URL the SAST-driven agent derived from source). Now that
+# /search is in the site tree, the active scanner fuzzes the `q` parameter and
+# flags the REFLECTED XSS. This is the payoff: give DAST the source-derived route
+# and it confirms the finding SAST started.
+---
+env:
+  contexts:
+    - name: vuln-target
+      urls:
+        - http://vuln-target:3000
+      includePaths:
+        - "http://vuln-target:3000.*"
+      excludePaths:
+        - "http://vuln-target:3000/logout.*"
+      authentication:
+        method: form
+        parameters:
+          loginPageUrl: http://vuln-target:3000/
+          loginRequestUrl: http://vuln-target:3000/login
+          loginRequestBody: "username={%username%}&password={%password%}"
+        verification:
+          method: response
+          loggedInRegex: ">Logout<"
+          loggedOutRegex: ">Sign in<"
+      sessionManagement:
+        method: cookie
+      users:
+        - name: alice
+          credentials:
+            username: alice
+            password: password123
+  parameters:
+    failOnError: true
+    progressToStdout: true
+jobs:
+  # Seed the hidden route the agent found in the source (routes/search.js).
+  - type: requestor
+    parameters:
+      user: alice
+    requests:
+      - url: http://vuln-target:3000/search?q=test
+        method: GET
+  - type: spider
+    parameters:
+      context: vuln-target
+      user: alice
+      url: http://vuln-target:3000/search?q=test
+      maxDuration: 2
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 5
+  - type: activeScan
+    parameters:
+      context: vuln-target
+      user: alice
+      maxScanDurationInMins: 10
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier3-auth-route
+      reportTitle: "VulnTarget DAST — Tier 3 (authenticated + /search route)"
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier3-auth-route

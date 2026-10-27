@@ -1,0 +1,24 @@
+rules:
+  # Path traversal: user input flows into a filesystem path that is read and returned,
+  # with no normalization or containment to the intended directory. Fires on
+  # routes/attachment.js (fs.readFileSync(path.join(UPLOADS, req.query.file))).
+  - id: vuln-target-path-traversal
+    languages: [javascript]
+    severity: ERROR
+    mode: taint
+    message: >-
+      Path traversal: a user-controlled value flows into a filesystem read with no
+      normalization or check that the resolved path stays within the intended directory.
+      A '../' sequence can read arbitrary files (e.g. /etc/passwd).
+    metadata:
+      cwe: "CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+      owasp: "A01:2021 - Broken Access Control"
+      category: security
+      confidence: HIGH
+    pattern-sources:
+      - pattern: req.query
+      - pattern: req.query.$P
+    pattern-sinks:
+      - pattern: fs.readFileSync(...)
+      - pattern: fs.createReadStream(...)
+      - pattern: res.sendFile(...)

@@ -1,0 +1,41 @@
+# TIER 1 — unauthenticated scan.
+# No credentials. Every route except /login redirects to login, so ZAP's spider
+# sees only the login page and the active scan finds NOTHING. This is the baseline:
+# "DAST with no context can't even get in the door."
+---
+env:
+  contexts:
+    - name: vuln-target
+      urls:
+        - http://vuln-target:3000
+      includePaths:
+        - "http://vuln-target:3000.*"
+      excludePaths:
+        - "http://vuln-target:3000/logout.*"
+  parameters:
+    failOnError: true
+    progressToStdout: true
+jobs:
+  - type: spider
+    parameters:
+      context: vuln-target
+      url: http://vuln-target:3000/
+      maxDuration: 2
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 3
+  - type: activeScan
+    parameters:
+      context: vuln-target
+      maxScanDurationInMins: 5
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier1-noauth
+      reportTitle: "VulnTarget DAST — Tier 1 (unauthenticated)"
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk/zap-out
+      reportFile: tier1-noauth

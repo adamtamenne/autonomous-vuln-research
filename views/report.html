@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Report #{{id}} · VulnTarget</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="page">
+  <nav class="nav">
+    <div class="nav-brand"><span class="brand-mark">🐞</span> VulnTarget</div>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+  <main class="wrap">
+    <p><a href="/dashboard" class="muted">&larr; All reports</a></p>
+    <div class="report-head">
+      <h1>{{title}}</h1>
+      <span class="badge badge-{{status}}">{{status}}</span>
+    </div>
+    <p class="muted">#{{id}} · submitted by {{submitter}} · {{created}}</p>
+    <p class="description">{{description}}</p>
+    <p><a href="/attachment?file=readme.txt">&#128206; Download attachment (readme.txt)</a>
+       &nbsp;·&nbsp; <a href="/download?file=readme.txt">&#128206; Download (filtered)</a></p>
+
+    <h3>Comments</h3>
+    <div class="comments">{{{comments}}}</div>
+
+    <form method="POST" action="/report/{{id}}/comment" class="comment-form">
+      <textarea name="body" rows="3" placeholder="Add a comment..."></textarea>
+      <button type="submit">Post comment</button>
+    </form>
+  </main>
+</body>
+</html>
