@@ -12,10 +12,19 @@ flowchart LR
     B --> C["Validation Agent\nPlaywright"]
     C --> D["Exploitation Agent\nClaude + Node"]
 
+    A --- A1["Scans source with\ncustom rules\n5 unconfirmed leads"]
+    B --- B1["3 scan tiers\nMisses hidden routes\nCan't fuzz past filters"]
+    C --- C1["Reads finding + source\nResolves route + auth\nBrowser-confirmed PoC"]
+    D --- D1["Claude reviews filter\nCode builds bypass\nConfirms /etc/passwd leak"]
+
     style A fill:#8b0000,color:#fff
     style B fill:#b45309,color:#fff
     style C fill:#7c3aed,color:#fff
     style D fill:#0369a1,color:#fff
+    style A1 fill:none,color:#999,stroke:#555
+    style B1 fill:none,color:#999,stroke:#555
+    style C1 fill:none,color:#999,stroke:#555
+    style D1 fill:none,color:#999,stroke:#555
 ```
 
 **Stage 1 — SAST (OpenGrep):** Custom rules scan the source and flag five potential vulnerabilities. These are leads, not confirmed bugs.
