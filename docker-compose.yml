@@ -14,6 +14,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.scanner
+    platform: linux/amd64
     profiles: ["scan"]
     volumes:
       - ./:/src:ro # app source, read-only
