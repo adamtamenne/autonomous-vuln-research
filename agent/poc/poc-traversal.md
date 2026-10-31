@@ -1,6 +1,6 @@
 # Path-Traversal Exploit PoC — BYPASSED & EXPLOITED
 
-**Generated:** 2026-10-27T02:40:58.550Z
+**Generated:** 2026-10-31T16:41:39.568Z
 
 ## Summary
 - **Exploited (filter bypassed, /etc/passwd read):** YES
@@ -11,8 +11,8 @@
 ## SAST -> exploit bridge
 - **SAST (opengrep):** `opengrep-rules.vuln-target-path-traversal` at `routes/download.js:21` (CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal'))
 - **LLM review (defensive):** assessment=**vulnerable**, weakness=**non_recursive_strip**
-  - The single-pass replace of traversal sequences allows overlapping patterns to collapse back into valid traversal after removal, and there is no canonicalization check confining the path to UPLOADS.
-  - **Recommended fix:** Resolve the final path with path.resolve and verify it starts with the UPLOADS directory before reading, rather than relying on string stripping.
+  - The single-pass replace of traversal sequences is non-recursive, so overlapping patterns reconstitute valid traversal after one removal and escape the uploads directory.
+  - **Recommended fix:** Resolve the final path with path.resolve and reject it unless it remains within the UPLOADS base directory, rather than relying on string stripping.
 - **Agent:** translated that diagnosis into a concrete payload in code, delivered it authenticated, confirmed the leak.
   (The model classifies the weakness; it will not emit a weaponized payload — so the agent weaponizes in code.)
 

