@@ -7,24 +7,69 @@ Built as a working demo for an OWASP presentation on autonomous vulnerability va
 ## How It Works
 
 ```mermaid
-flowchart LR
-    A["SAST\nOpenGrep"] --> B["DAST\nOWASP ZAP"]
-    B --> C["Validation Agent\nPlaywright"]
-    C --> D["Exploitation Agent\nClaude + Node"]
+flowchart TD
+    subgraph SOURCE ["Source code: 5 vulnerabilities"]
+        V1["Reflected XSS\n/search (hidden route)"]
+        V2["SQL Injection\n/filter"]
+        V3["HTML Injection\n/preview (hidden route)"]
+        V4["Path Traversal\n/attachment"]
+        V5["Path Traversal\n/download (filtered)"]
+    end
 
-    A --- A1["Scans source with\ncustom rules\n5 unconfirmed leads"]
-    B --- B1["3 scan tiers\nMisses hidden routes\nCan't fuzz past filters"]
-    C --- C1["Reads finding + source\nResolves route + auth\nBrowser-confirmed PoC"]
-    D --- D1["Claude reviews filter\nCode builds bypass\nConfirms /etc/passwd leak"]
+    subgraph SAST ["Stage 1: SAST (OpenGrep) — reads source"]
+        S1["Found ⚠️\nunconfirmed"]
+        S2["Found ⚠️\nunconfirmed"]
+        S3["Found ⚠️\nunconfirmed"]
+        S4["Found ⚠️\nunconfirmed"]
+        S5["Found ⚠️\nunconfirmed"]
+    end
 
-    style A fill:#8b0000,color:#fff
-    style B fill:#b45309,color:#fff
-    style C fill:#7c3aed,color:#fff
-    style D fill:#0369a1,color:#fff
-    style A1 fill:none,color:#999,stroke:#555
-    style B1 fill:none,color:#999,stroke:#555
-    style C1 fill:none,color:#999,stroke:#555
-    style D1 fill:none,color:#999,stroke:#555
+    subgraph DAST ["Stage 2: DAST (OWASP ZAP) — hits live app"]
+        D1["Missed ❌\ncan't discover route"]
+        D2["Found ✅\nconfirmed"]
+        D3["Missed ❌\ncan't discover route"]
+        D4["Found ✅\nconfirmed"]
+        D5["Missed ❌\nfilter blocks fuzz"]
+    end
+
+    subgraph AGENTS ["Stages 3-4: Agents bridge the gap"]
+        A1["Validation Agent\nresolved route from source\nauthenticated via Playwright\nconfirmed XSS execution ✅"]
+        A3["Validation Agent\nresolved route from source\nauthenticated via Playwright\nconfirmed injection ✅"]
+        A5["Exploitation Agent\nClaude reviewed filter logic\ncode built bypass payload\nconfirmed /etc/passwd leak ✅"]
+    end
+
+    V1 --> S1 --> D1 --> A1
+    V2 --> S2 --> D2
+    V3 --> S3 --> D3 --> A3
+    V4 --> S4 --> D4
+    V5 --> S5 --> D5 --> A5
+
+    style SOURCE fill:none,stroke:#555,color:#ccc
+    style SAST fill:none,stroke:#8b0000,color:#ccc
+    style DAST fill:none,stroke:#b45309,color:#ccc
+    style AGENTS fill:none,stroke:#7c3aed,color:#ccc
+
+    style V1 fill:#2d2d2d,color:#fff,stroke:#555
+    style V2 fill:#2d2d2d,color:#fff,stroke:#555
+    style V3 fill:#2d2d2d,color:#fff,stroke:#555
+    style V4 fill:#2d2d2d,color:#fff,stroke:#555
+    style V5 fill:#2d2d2d,color:#fff,stroke:#555
+
+    style S1 fill:#8b0000,color:#fff,stroke:#b22222
+    style S2 fill:#8b0000,color:#fff,stroke:#b22222
+    style S3 fill:#8b0000,color:#fff,stroke:#b22222
+    style S4 fill:#8b0000,color:#fff,stroke:#b22222
+    style S5 fill:#8b0000,color:#fff,stroke:#b22222
+
+    style D1 fill:#7f1d1d,color:#fca5a5,stroke:#dc2626
+    style D2 fill:#065f46,color:#6ee7b7,stroke:#10b981
+    style D3 fill:#7f1d1d,color:#fca5a5,stroke:#dc2626
+    style D4 fill:#065f46,color:#6ee7b7,stroke:#10b981
+    style D5 fill:#7f1d1d,color:#fca5a5,stroke:#dc2626
+
+    style A1 fill:#7c3aed,color:#fff,stroke:#8b5cf6
+    style A3 fill:#7c3aed,color:#fff,stroke:#8b5cf6
+    style A5 fill:#0369a1,color:#fff,stroke:#0ea5e9
 ```
 
 **Stage 1 — SAST (OpenGrep):** Custom rules scan the source and flag five potential vulnerabilities. These are leads, not confirmed bugs.
