@@ -1,8 +1,8 @@
 {
 	"@programName": "ZAP",
 	"@version": "2.17.0",
-	"@generated": "Thu, 22 Oct 2026 20:27:34",
-	"created": "2026-10-22T20:27:34.915308799Z",
+	"@generated": "Sat, 31 Oct 2026 14:22:27",
+	"created": "2026-10-31T14:22:27.823007927Z",
 	"insights":[
 		{
 			"level": "Low",
@@ -95,7 +95,7 @@
 					"desc": "<p>No Anti-CSRF tokens were found in a HTML submission form.</p><p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p><p></p><p>CSRF attacks are effective in a number of situations, including:</p><p>    * The victim has an active session on the target site.</p><p>    * The victim is authenticated via HTTP auth on the target site.</p><p>    * The victim is on the same local network as the target site.</p><p></p><p>CSRF has primarily been used to perform an action against a target site using the victim's privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>",
 					"instances":[ 
 						{
-							"id": "9",
+							"id": "13",
 							"uri": "http://vuln-target:3000",
 							"nodeName": "http:\/\/vuln-target:3000",
 							"method": "GET",
@@ -105,7 +105,7 @@
 							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"password\" \"username\" ]."
 						},
 						{
-							"id": "7",
+							"id": "11",
 							"uri": "http://vuln-target:3000/",
 							"nodeName": "http:\/\/vuln-target:3000\/",
 							"method": "GET",
@@ -115,7 +115,7 @@
 							"otherinfo": "No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: \"password\" \"username\" ]."
 						},
 						{
-							"id": "8",
+							"id": "14",
 							"uri": "http://vuln-target:3000/login",
 							"nodeName": "http:\/\/vuln-target:3000\/login ()(password,username)",
 							"method": "POST",
@@ -132,7 +132,7 @@
 					"reference": "<p>https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html</p><p>https://cwe.mitre.org/data/definitions/352.html</p>",
 					"cweid": "352",
 					"wascid": "9",
-					"sourceid": "1"
+					"sourceid": "9"
 				},
 				{
 					"pluginid": "10055",
@@ -145,7 +145,7 @@
 					"desc": "<p>The Content Security Policy fails to define one of the directives that has no fallback. Missing/excluding them is the same as allowing anything.</p>",
 					"instances":[ 
 						{
-							"id": "12",
+							"id": "9",
 							"uri": "http://vuln-target:3000/robots.txt",
 							"nodeName": "http:\/\/vuln-target:3000\/robots.txt",
 							"method": "GET",
@@ -155,7 +155,7 @@
 							"otherinfo": "The directive(s): frame-ancestors, form-action is/are among the directives that do not fallback to default-src."
 						},
 						{
-							"id": "13",
+							"id": "8",
 							"uri": "http://vuln-target:3000/sitemap.xml",
 							"nodeName": "http:\/\/vuln-target:3000\/sitemap.xml",
 							"method": "GET",
@@ -172,7 +172,7 @@
 					"reference": "<p>https://www.w3.org/TR/CSP/</p><p>https://caniuse.com/#search=content+security+policy</p><p>https://content-security-policy.com/</p><p>https://github.com/HtmlUnit/htmlunit-csp</p><p>https://web.dev/articles/csp#resource-options</p>",
 					"cweid": "693",
 					"wascid": "15",
-					"sourceid": "10"
+					"sourceid": "8"
 				},
 				{
 					"pluginid": "10038",
@@ -185,7 +185,7 @@
 					"desc": "<p>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page \u2014 covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</p>",
 					"instances":[ 
 						{
-							"id": "6",
+							"id": "7",
 							"uri": "http://vuln-target:3000",
 							"nodeName": "http:\/\/vuln-target:3000",
 							"method": "GET",
@@ -195,7 +195,7 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "3",
+							"id": "4",
 							"uri": "http://vuln-target:3000/",
 							"nodeName": "http:\/\/vuln-target:3000\/",
 							"method": "GET",
@@ -205,7 +205,7 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "4",
+							"id": "6",
 							"uri": "http://vuln-target:3000/login",
 							"nodeName": "http:\/\/vuln-target:3000\/login ()(password,username)",
 							"method": "POST",
@@ -222,7 +222,7 @@
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP</p><p>https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</p><p>https://www.w3.org/TR/CSP/</p><p>https://w3c.github.io/webappsec-csp/</p><p>https://web.dev/articles/csp</p><p>https://caniuse.com/#feat=contentsecuritypolicy</p><p>https://content-security-policy.com/</p>",
 					"cweid": "693",
 					"wascid": "15",
-					"sourceid": "1"
+					"sourceid": "9"
 				},
 				{
 					"pluginid": "10020",
@@ -262,7 +262,7 @@
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options</p>",
 					"cweid": "1021",
 					"wascid": "15",
-					"sourceid": "9"
+					"sourceid": "1"
 				},
 				{
 					"pluginid": "10037",
@@ -275,7 +275,7 @@
 					"desc": "<p>The web/application server is leaking information via one or more \"X-Powered-By\" HTTP response headers. Access to such information may facilitate attackers identifying other frameworks/components your web application is reliant upon and the vulnerabilities such components may be subject to.</p>",
 					"instances":[ 
 						{
-							"id": "23",
+							"id": "21",
 							"uri": "http://vuln-target:3000",
 							"nodeName": "http:\/\/vuln-target:3000",
 							"method": "GET",
@@ -285,7 +285,17 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "15",
+							"id": "20",
+							"uri": "http://vuln-target:3000/",
+							"nodeName": "http:\/\/vuln-target:3000\/",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "X-Powered-By: Express",
+							"otherinfo": ""
+						},
+						{
+							"id": "17",
 							"uri": "http://vuln-target:3000/robots.txt",
 							"nodeName": "http:\/\/vuln-target:3000\/robots.txt",
 							"method": "GET",
@@ -305,20 +315,10 @@
 							"otherinfo": ""
 						},
 						{
-							"id": "14",
+							"id": "12",
 							"uri": "http://vuln-target:3000/style.css",
 							"nodeName": "http:\/\/vuln-target:3000\/style.css",
 							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "X-Powered-By: Express",
-							"otherinfo": ""
-						},
-						{
-							"id": "18",
-							"uri": "http://vuln-target:3000/login",
-							"nodeName": "http:\/\/vuln-target:3000\/login ()(password,username)",
-							"method": "POST",
 							"param": "",
 							"attack": "",
 							"evidence": "X-Powered-By: Express",
@@ -355,7 +355,7 @@
 							"otherinfo": "This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.\nAt \"High\" threshold this scan rule will not alert on client or server error responses."
 						},
 						{
-							"id": "20",
+							"id": "18",
 							"uri": "http://vuln-target:3000/",
 							"nodeName": "http:\/\/vuln-target:3000\/",
 							"method": "GET",
@@ -382,7 +382,7 @@
 					"reference": "<p>https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)</p><p>https://owasp.org/www-community/Security_Headers</p>",
 					"cweid": "693",
 					"wascid": "15",
-					"sourceid": "1"
+					"sourceid": "9"
 				},
 				{
 					"pluginid": "10111",
@@ -395,7 +395,7 @@
 					"desc": "<p>The given request has been identified as an authentication request. The 'Other Info' field contains a set of key=value lines which identify any relevant fields. If the request is in a context which has an Authentication Method set to \"Auto-Detect\" then this rule will change the authentication to match the request identified.</p>",
 					"instances":[ 
 						{
-							"id": "24",
+							"id": "3",
 							"uri": "http://vuln-target:3000/login",
 							"nodeName": "http:\/\/vuln-target:3000\/login ()(password,username)",
 							"method": "POST",

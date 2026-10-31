@@ -218,7 +218,7 @@ td {
 	</h2>
 
 	<h3>
-		Generated on Tue, 27 Oct 2026 01:45:20
+		Generated on Sat, 31 Oct 2026 14:30:50
 	</h3>
 
 	<h3>
@@ -243,7 +243,7 @@ td {
 					<div>High</div>
 				</td>
 				<td align="center">
-					<div>4</div>
+					<div>5</div>
 				</td>
 			</tr>
 			<tr>
@@ -308,7 +308,7 @@ td {
 					<div>ZAP warnings logged - see the zap.log file for details</div>
 				</td>
 				<td align="center">
-					<div>28   </div>
+					<div>20   </div>
 				</td>
 				</tr>
 			
@@ -544,11 +544,19 @@ td {
 				
 			</tr>
 			<tr>
-				<td><a href="#40018">SQL Injection</a></td>
+				<td><a href="#6">Path Traversal</a></td>
 				<td align="center" class="risk-3">High</td>
 				
 				
 				<td align="center">1</td>
+				
+			</tr>
+			<tr>
+				<td><a href="#40018">SQL Injection</a></td>
+				<td align="center" class="risk-3">High</td>
+				
+				
+				<td align="center">2</td>
 				
 			</tr>
 			<tr>
@@ -717,6 +725,18 @@ td {
 							<br />
 						
 							<div>Access: http://vuln-target:3000/profile&lt;PAYLOAD_0&gt;</div>
+							<br />
+						
+							<div>Write to /html/body/main/form/label/input the value: &lt;PAYLOAD_0&gt;</div>
+							<br />
+						
+							<div>Click element: /html/body/main/form/label/input</div>
+							<br />
+						
+							<div>Access: http://vuln-target:3000/profile&lt;PAYLOAD_0&gt;</div>
+							<br />
+						
+							<div>Click element: /html/body/main/form/button</div>
 							
 						</td>
 					</tr>
@@ -762,18 +782,6 @@ td {
 							<br />
 						
 							<div>Access: http://vuln-target:3000/profile&lt;PAYLOAD_0&gt;</div>
-							<br />
-						
-							<div>Write to /html/body/main/form/label/input the value: &lt;PAYLOAD_0&gt;</div>
-							<br />
-						
-							<div>Click element: /html/body/main/form/label/input</div>
-							<br />
-						
-							<div>Access: http://vuln-target:3000/profile&lt;PAYLOAD_0&gt;</div>
-							<br />
-						
-							<div>Click element: /html/body/main/form/button</div>
 							
 						</td>
 					</tr>
@@ -1594,6 +1602,140 @@ td {
 			<table class="results">
 				<tr height="24">
 					<th width="20%" class="risk-3"><a
+						id="6"></a>
+						<div>High</div></th>
+					<th class="risk-3">Path Traversal</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>The Path Traversal attack technique allows an attacker access to files, directories, and commands that potentially reside outside the web document root directory. An attacker may manipulate a URL in such a way that the web site will execute or reveal the contents of arbitrary files anywhere on the web server. Any device that exposes an HTTP-based interface is potentially vulnerable to Path Traversal.</div>
+							<br />
+						
+							<div>Most web sites restrict user access to a specific portion of the file-system, typically called the &quot;web document root&quot; or &quot;CGI root&quot; directory. These directories contain the files intended for user access and the executable necessary to drive web application functionality. To access files or execute commands anywhere on the file-system, Path Traversal attacks will utilize the ability of special-characters sequences.</div>
+							<br />
+						
+							<div>The most basic Path Traversal attack uses the &quot;../&quot; special-character sequence to alter the resource location requested in the URL. Although most popular web servers will prevent this technique from escaping the web document root, alternate encodings of the &quot;../&quot; sequence may help bypass the security filters. These method variations include valid and invalid Unicode-encoding (&quot;..%u2216&quot; or &quot;..%c0%af&quot;) of the forward slash character, backslash characters (&quot;..\&quot;) on Windows-based servers, URL encoded characters &quot;%2e%2e%2f&quot;), and double URL encoding (&quot;..%255c&quot;) of the backslash character.</div>
+							<br />
+						
+							<div>Even if the web server properly restricts Path Traversal attempts in the URL path, a web application itself may still be vulnerable due to improper handling of user-supplied input. This is a common problem of web applications that use template mechanisms or load static text from files. In variations of the attack, the original URL parameter value is substituted with the file name of one of the web application&#39;s dynamic scripts. Consequently, the results can reveal source code because the file is interpreted as text instead of an executable script. These techniques often employ additional special characters such as the dot (&quot;.&quot;) to reveal the listing of the current working directory, or &quot;%00&quot; NULL characters in order to bypass rudimentary file extension checks.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/attachment?file=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd">http://vuln-target:3000/attachment?file=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/attachment (file)</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">file</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">../../../../../../../../../../../../../../../../etc/passwd</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">root:x:0:0</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					
+					
+					<td width="80%">1</td>
+					
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Assume all input is malicious. Use an &quot;accept known good&quot; input validation strategy, i.e., use an allow list of acceptable inputs that strictly conform to specifications. Reject any input that does not strictly conform to specifications, or transform it into something that does. Do not rely exclusively on looking for malicious or malformed inputs (i.e., do not rely on a deny list). However, deny lists can be useful for detecting potential attacks or determining which inputs are so malformed that they should be rejected outright.</div>
+							<br />
+						
+							<div>When performing input validation, consider all potentially relevant properties, including length, type of input, the full range of acceptable values, missing or extra inputs, syntax, consistency across related fields, and conformance to business rules. As an example of business rule logic, &quot;boat&quot; may be syntactically valid because it only contains alphanumeric characters, but it is not valid if you are expecting colors such as &quot;red&quot; or &quot;blue.&quot;</div>
+							<br />
+						
+							<div>For filenames, use stringent allow lists that limit the character set to be used. If feasible, only allow a single &quot;.&quot; character in the filename to avoid weaknesses, and exclude directory separators such as &quot;/&quot;. Use an allow list of allowable file extensions.</div>
+							<br />
+						
+							<div>Warning: if you attempt to cleanse your data, then do so that the end result is not in the form that can be dangerous. A sanitizing mechanism can remove characters such as &#39;.&#39; and &#39;;&#39; which may be required for some exploits. An attacker can try to fool the sanitizing mechanism into &quot;cleaning&quot; data into a dangerous form. Suppose the attacker injects a &#39;.&#39; inside a filename (e.g. &quot;sensi.tiveFile&quot;) and the sanitizing mechanism removes the character resulting in the valid filename, &quot;sensitiveFile&quot;. If the input data are now assumed to be safe, then the file may be compromised. </div>
+							<br />
+						
+							<div>Inputs should be decoded and canonicalized to the application&#39;s current internal representation before being validated. Make sure that your application does not decode the same input twice. Such errors could be used to bypass allow list schemes by introducing dangerous inputs after they have been checked.</div>
+							<br />
+						
+							<div>Use a built-in path canonicalization function (such as realpath() in C) that produces the canonical version of the pathname, which effectively removes &quot;..&quot; sequences and symbolic links.</div>
+							<br />
+						
+							<div>Run your code using the lowest privileges that are required to accomplish the necessary tasks. If possible, create isolated accounts with limited privileges that are only used for a single task. That way, a successful attack will not immediately give the attacker access to the rest of the software or its environment. For example, database applications rarely need to run as the database administrator, especially in day-to-day operations.</div>
+							<br />
+						
+							<div>When the set of acceptable objects, such as filenames or URLs, is limited or known, create a mapping from a set of fixed input values (such as numeric IDs) to the actual filenames or URLs, and reject all other inputs.</div>
+							<br />
+						
+							<div>Run your code in a &quot;jail&quot; or similar sandbox environment that enforces strict boundaries between the process and the operating system. This may effectively restrict which files can be accessed in a particular directory or which commands can be executed by your software.</div>
+							<br />
+						
+							<div>OS-level examples include the Unix chroot jail, AppArmor, and SELinux. In general, managed code may provide some protection. For example, java.io.FilePermission in the Java SecurityManager allows you to specify restrictions on file operations.</div>
+							<br />
+						
+							<div>This may not be a feasible solution, and it only limits the impact to the operating system; the rest of your application may still be subject to compromise.</div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://owasp.org/www-community/attacks/Path_Traversal">https://owasp.org/www-community/attacks/Path_Traversal</a>
+							<br />
+						
+							<a href="https://cwe.mitre.org/data/definitions/22.html">https://cwe.mitre.org/data/definitions/22.html</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/22.html">22</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">33</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/6/">6</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
+		
+			<table class="results">
+				<tr height="24">
+					<th width="20%" class="risk-3"><a
 						id="40018"></a>
 						<div>High</div></th>
 					<th class="risk-3">SQL Injection</th>
@@ -1645,11 +1787,59 @@ td {
 						<td width="80%"></td>
 					</tr>
 				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/report/4/comment">http://vuln-target:3000/report/4/comment</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/report/4/comment ()(body)</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">POST</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">body</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"> OR 1=1 -- </td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">
+							<div>The page results were successfully manipulated using the boolean conditions [ AND 1=1 -- ] and [ OR 1=1 -- ]</div>
+							<br />
+						
+							<div>The parameter value being modified was stripped from the HTML output for the purposes of the comparison.</div>
+							<br />
+						
+							<div>Data was NOT returned for the original parameter.</div>
+							<br />
+						
+							<div>The vulnerability was detected by successfully retrieving more data than originally returned, by manipulating the parameter.</div>
+							
+						</td>
+					</tr>
+				
 				<tr>
 					<td width="20%">Instances</td>
 					
 					
-					<td width="80%">1</td>
+					<td width="80%">2</td>
 					
 				</tr>
 				<tr>
@@ -1833,6 +2023,45 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/report/2">http://vuln-target:3000/report/2</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/report/2</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;form method=&quot;POST&quot; action=&quot;/report/2/comment&quot; class=&quot;comment-form&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">
+							<div>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: &quot;&quot; ].</div>
+							
+						</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
 						<td width="80%"><a href="http://vuln-target:3000/report/4">http://vuln-target:3000/report/4</a></td>
 					</tr>
 					<tr>
@@ -1859,45 +2088,6 @@ td {
 						<td width="20%"
 							class="indent2">Evidence</td>
 						<td width="80%">&lt;form method=&quot;POST&quot; action=&quot;/report/4/comment&quot; class=&quot;comment-form&quot;&gt;</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%">
-							<div>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: &quot;&quot; ].</div>
-							
-						</td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/5">http://vuln-target:3000/report/5</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/5</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%">&lt;form method=&quot;POST&quot; action=&quot;/report/5/comment&quot; class=&quot;comment-form&quot;&gt;</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -2386,6 +2576,42 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/filter?status=closed">http://vuln-target:3000/filter?status=closed</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/filter (status)</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
 						<td width="80%"><a href="http://vuln-target:3000/profile">http://vuln-target:3000/profile</a></td>
 					</tr>
 					<tr>
@@ -2428,42 +2654,6 @@ td {
 						<td width="20%"
 							class="indent2">Node Name</td>
 						<td width="80%">http://vuln-target:3000/report/1</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/4">http://vuln-target:3000/report/4</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/4</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -2568,12 +2758,84 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000">http://vuln-target:3000</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">x-frame-options</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
 						<td width="80%"><a href="http://vuln-target:3000/dashboard">http://vuln-target:3000/dashboard</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
 						<td width="80%">http://vuln-target:3000/dashboard</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">x-frame-options</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/filter?status=closed">http://vuln-target:3000/filter?status=closed</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/filter (status)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -2646,78 +2908,6 @@ td {
 						<td width="20%"
 							class="indent2">Node Name</td>
 						<td width="80%">http://vuln-target:3000/report/1</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">x-frame-options</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/3">http://vuln-target:3000/report/3</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/3</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">x-frame-options</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/4">http://vuln-target:3000/report/4</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/4</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3063,12 +3253,48 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/download?file=readme.txt">http://vuln-target:3000/download?file=readme.txt</a></td>
+						<td width="80%"><a href="http://vuln-target:3000/dashboard">http://vuln-target:3000/dashboard</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/download (file)</td>
+						<td width="80%">http://vuln-target:3000/dashboard</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">X-Powered-By: Express</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="http://vuln-target:3000/robots.txt">http://vuln-target:3000/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://vuln-target:3000/robots.txt</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3105,42 +3331,6 @@ td {
 						<td width="20%"
 							class="indent2">Node Name</td>
 						<td width="80%">http://vuln-target:3000/sitemap.xml</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%">X-Powered-By: Express</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/style.css">http://vuln-target:3000/style.css</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/style.css</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3272,12 +3462,12 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/download?file=readme.txt">http://vuln-target:3000/download?file=readme.txt</a></td>
+						<td width="80%"><a href="http://vuln-target:3000/dashboard">http://vuln-target:3000/dashboard</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/download (file)</td>
+						<td width="80%">http://vuln-target:3000/dashboard</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3314,12 +3504,12 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/4">http://vuln-target:3000/report/4</a></td>
+						<td width="80%"><a href="http://vuln-target:3000/filter?status=closed">http://vuln-target:3000/filter?status=closed</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/4</td>
+						<td width="80%">http://vuln-target:3000/filter (status)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3356,12 +3546,12 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/report/6">http://vuln-target:3000/report/6</a></td>
+						<td width="80%"><a href="http://vuln-target:3000/profile">http://vuln-target:3000/profile</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/report/6</td>
+						<td width="80%">http://vuln-target:3000/profile</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -3398,12 +3588,12 @@ td {
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://vuln-target:3000/style.css">http://vuln-target:3000/style.css</a></td>
+						<td width="80%"><a href="http://vuln-target:3000/report/1">http://vuln-target:3000/report/1</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://vuln-target:3000/style.css</td>
+						<td width="80%">http://vuln-target:3000/report/1</td>
 					</tr>
 					<tr>
 						<td width="20%"
