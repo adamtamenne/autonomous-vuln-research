@@ -1,4 +1,6 @@
-// GET /dashboard — list of all bug reports
+// /dashboard - report listing
+// no vulns, all output is escaped with esc()
+// this is the main page after login, links to filter and report pages
 const express = require('express');
 const db = require('../db/seed');
 const requireAuth = require('../lib/auth');

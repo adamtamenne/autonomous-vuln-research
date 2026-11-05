@@ -1,7 +1,5 @@
-// GET /download?file=  — download a report attachment, WITH a safeguard.
-// VULN: path traversal that survives a naive filter.
-// Difficulty: HARD — the filter blocks obvious ../ payloads (and a plain DAST fuzz),
-// so it takes a crafted bypass. The agent reads this filter and engineers one.
+// /download - path traversal with a bypass
+// has a filter but its single pass so ....// collapses to ../ after the strip
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -11,14 +9,16 @@ const router = express.Router();
 const UPLOADS = path.join(__dirname, '..', 'uploads');
 
 router.get('/download', requireAuth, (req, res) => {
-  const requested = req.query.file || 'readme.txt';   // SOURCE
-  // SAFEGUARD (insufficient): strip "../" sequences before use.
-  // The flaw: it is a single, NON-RECURSIVE pass, so "....//" collapses back into
-  // "../" after the inner "../" is removed — and slips straight through.
-  const safe = requested.replace(/\.\.\//g, '');       // TODO: path.resolve + verify it stays under UPLOADS
-  const full = path.join(UPLOADS, safe);               // SINK
+  const requested = req.query.file || 'readme.txt';   // user input
+
+  // this is the "fix" but its broken
+  // single pass replace: ....// becomes ../ after the inner ../ is stripped
+  // needs recursive replace or path.resolve + prefix check
+  const safe = requested.replace(/\.\.\//g, '');
+
+  const full = path.join(UPLOADS, safe);               // traversal lands here
   try {
-    const data = fs.readFileSync(full);                // ....//....//....//etc/passwd  -> ../../../etc/passwd
+    const data = fs.readFileSync(full);                // ....//....//....//etc/passwd reads /etc/passwd
     res.type('text/plain').send(data);
   } catch (e) {
     res.status(404).type('text/plain').send('Not found');

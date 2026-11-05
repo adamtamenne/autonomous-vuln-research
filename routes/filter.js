@@ -1,6 +1,5 @@
-// GET /filter?status=  — dashboard status filter.
-// VULN: SQL injection — the status value is concatenated straight into the SQL string.
-// Difficulty: EASY — linked from the dashboard, so a crawler reaches it.
+// /filter - SQL injection
+// linked from dashboard so DAST finds this on its own
 const express = require('express');
 const db = require('../db/seed');
 const requireAuth = require('../lib/auth');
@@ -9,13 +8,17 @@ const { esc } = require('../lib/views');
 const router = express.Router();
 
 router.get('/filter', requireAuth, (req, res) => {
-  const status = req.query.status || 'open';          // SOURCE
-  // SINK: status concatenated directly into SQL instead of a bound parameter.
-  const rows = db.prepare(`SELECT * FROM reports WHERE status = '${status}'`).all(); // TODO: parameterize
+  const status = req.query.status || 'open';          // user input
+
+  // vuln: status concatenated straight into the query string
+  // should be a bound parameter like the other queries
+  const rows = db.prepare(`SELECT * FROM reports WHERE status = '${status}'`).all();
+
   const items = rows.map(r =>
     `<tr><td class="muted">#${esc(String(r.id))}</td><td><a href="/report/${esc(String(r.id))}">${esc(r.title)}</a></td><td><span class="badge badge-${esc(r.status)}">${esc(r.status)}</span></td></tr>`
   ).join('');
-  // status is escaped for display (no XSS here) — the bug is in the SQL above.
+
+  // status IS escaped in the HTML so no XSS, the bug is only in the SQL above
   res.send(`<!doctype html>
     <html><head><title>Filter · VulnTarget</title><link rel="stylesheet" href="/style.css"></head>
     <body class="page"><main class="wrap">

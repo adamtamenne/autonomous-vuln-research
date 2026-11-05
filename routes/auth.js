@@ -1,4 +1,6 @@
-// POST /login, GET /logout, GET / (login page)
+// /login, /logout, / (login page)
+// no vulns here, auth is clean
+// passwords stored plaintext in the seed db but thats by design for the lab
 const express = require('express');
 const db = require('../db/seed');
 const { render } = require('../lib/views');
@@ -12,6 +14,7 @@ router.get('/', (req, res) => {
 
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
+  // parameterized query, no sqli
   const user = db.prepare('SELECT * FROM users WHERE username = ? AND password = ?').get(username, password);
   if (!user) {
     return res.status(401).send(render('login', { error: 'Invalid username or password.' }));
