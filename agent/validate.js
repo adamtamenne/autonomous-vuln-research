@@ -34,7 +34,7 @@ const CONTROL = 'hello';
 const log = (step, msg) => console.log(`[agent] ${String(step).padEnd(8)} ${msg}`);
 
 // ---- 1. Ingest SAST (opengrep) -------------------------------------------------
-First thing the agent does is read the SAST findings from OpenGrep.
+// First thing the agent does is read the SAST findings from OpenGrep.
 // It parses out the rule, the file, the line number, and the CWE.
 // This is the starting point, what the scanner flagged.
 function loadSast() {
@@ -49,7 +49,7 @@ function loadSast() {
 }
 
 // ---- 2. Resolve route / param / auth from SOURCE -------------------------------
-This is where it gets source-aware. The agent reads the actual source file
+// This is where it gets source-aware. The agent reads the actual source file
 // that SAST flagged, and extracts the HTTP route, the method, the parameter name,
 // and whether it requires authentication. A regular DAST scanner doesn't do this.
 // It just crawls links. This agent reads the code to figure out how to reach the endpoint.
@@ -66,7 +66,7 @@ function resolveFromSource(finding) {
 }
 
 // ---- 2b. Resolve a working login from SOURCE (seed + auth route) ---------------
-Same idea for auth. It reads the seed file to get valid credentials
+// Same idea for auth. It reads the seed file to get valid credentials
 // and reads the auth route to know where to POST the login.
 // Everything is derived from source, not hardcoded.
 function resolveAuth() {
@@ -88,7 +88,7 @@ function resolveAuth() {
 }
 
 // ---- 3. Cross-reference DAST: did the scan reach this route? -------------------
-Here it cross-references the ZAP DAST report. Did the standard scan even
+// Here it cross-references the ZAP DAST report. Did the standard scan even
 // reach this route? If not, that confirms the gap. SAST found it, DAST missed it,
 // and now the agent is bridging that gap.
 function dastReached(route) {
@@ -137,10 +137,10 @@ async function main() {
   }
 
   // deliver payload (reflected param in the URL)
-  Now it delivers the XSS payload in a real headless browser using Playwright.
+  // Now it delivers the XSS payload in a real headless browser using Playwright.
   // This is important because we're confirming EXECUTION, not just reflection.
-  // The payload sets document.title to 'XSS-CONFIRMED' plus the cookie.
-  // If the title changes, the script actually ran in the browser context."
+  // The payload sets document.title to XSS-CONFIRMED plus the cookie.
+  // If the title changes, the script actually ran in the browser context.
   const payloadUrl = `${TARGET}${r.route}?${r.param}=${encodeURIComponent(PAYLOAD)}`;
   await page.goto(payloadUrl, { waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
@@ -149,11 +149,11 @@ async function main() {
   log('exploit', `title="${execTitle}"  executed=${executed}`);
 
   // negative control
-  This is the negative control. We send a benign input like 'hello'.
+  // This is the negative control. We send a benign input like hello.
   // If the title does NOT change, that proves the XSS confirmation wasn't
   // a false positive. The page reflects input but only the malicious payload
   // actually executes. Both conditions have to pass: payload executes AND
-  // control stays clean."
+  // control stays clean.
   const controlUrl = `${TARGET}${r.route}?${r.param}=${encodeURIComponent(CONTROL)}`;
   await page.goto(controlUrl, { waitUntil: 'networkidle' });
   await page.waitForTimeout(150);
